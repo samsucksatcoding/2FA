@@ -1,0 +1,28 @@
+[project]
+name = "PNK Authenticator"
+version = "1.0.0"
+description = "Encrypted two-factor authenticator vault"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "flet",
+    "flet-camera",
+    "cryptography",
+    "pillow",
+    "numpy",
+    "opencv-python-headless"
+]
+
+[tool.flet]
+org = "com.pnkwtf"
+product = "Pnk Authenticator"
+company = "Sam White"
+description = "Private encrypted authenticator"
+permissions = ["camera"]
+
+[tool.flet.android]
+min_sdk_version = 24
+
+[tool.flet.android.permission]
+"android.permission.CAMERA" = true
+"android.permission.READ_MEDIA_IMAGES" = false
+"android.permission.READ_EXTERNAL_STORAGE" = false
