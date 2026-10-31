@@ -12,7 +12,7 @@ A private, encrypted two-factor authentication (2FA) vault built with Python and
 - **Account management** — Add, view, and delete authenticator accounts.
 - **Duplicate detection** — Avoid accidentally importing duplicate accounts.
 - **Encrypted transfers** — Export and import accounts using password-protected transfer files or Bluetooth sync.
-- **Cross-platform support** — Android mobile support (`main.py`) and Windows desktop support (`2fa.py`).
+- **Cross-platform support** — Separate implementations tailored for Android mobile (`Android/`) and Windows desktop (`Windows/`).
 
 ## Technologies
 
@@ -47,7 +47,7 @@ Never commit your actual vault files, encryption salts, passwords, or other priv
 
 - Windows 10 or newer
 - Python 3.13
-- Java Development Kit (JDK 21 recommended)
+- Java Development Kit (JDK 21 recommended for Android builds)
 - Android Studio & Android SDK (for building Android APKs)
 - Flutter (managed through the Flet build environment)
 
@@ -55,7 +55,7 @@ Never commit your actual vault files, encryption salts, passwords, or other priv
 
 ```powershell
 git clone https://github.com/YOUR_USERNAME/PNK-Authenticator.git
-cd PNK-Authenticator
+cd "PNK Authenticator"
 ```
 
 ### 2. Create a virtual environment
@@ -85,15 +85,11 @@ py -m pip install --upgrade flet flet-cli
 py -m pip install flet-camera cryptography pillow numpy opencv-python-headless
 ```
 
----
-
 ## Building Executables & Packages
 
-This repository contains two variants of the application:
-1. **`main.py`** — The mobile/Android version featuring camera scanning and mobile UI layouts.
-2. **`2fa.py`** — The Windows desktop version featuring clipboard QR scanning and Bluetooth peer-to-peer sync.
+The codebase is split into two directories tailored for each target platform:
 
-### Building the Android Version (`main.py`) into an APK
+### 1. Building the Android APK (`Android/Main.py`)
 
 Make sure your Android SDK and JDK are installed and configured. Set your Java environment variables if necessary:
 
@@ -102,52 +98,54 @@ $env:JAVA_HOME = "C:\Program Files\Java\jdk-21"
 $env:Path = "$env:JAVA_HOME\bin;$env:Path"
 ```
 
-Build the release APK specifying `main.py` as the module entry point:
+Navigate into the `Android` directory and run the build command:
 
 ```powershell
-flet build apk --module-name main.py
+cd Android
+flet build apk --module-name Main.py
 ```
 
-The generated APK will be available in the `build/apk` output directory and can be installed on compatible Android devices.
+The generated `.apk` file will be generated under `Android/build/apk/`.
 
-### Building the Windows Version (`2fa.py`) into an EXE
+### 2. Building the Windows Executable (`Windows/2fa.py`)
 
-To bundle the Windows desktop application into a standalone executable (`.exe`), you can use Flet's build command or `flet pack`:
+To build the standalone Windows application (`.exe`), navigate into the `Windows` directory:
 
-Using `flet build`:
+```powershell
+cd Windows
+```
+
+Using Flet build:
+
 ```powershell
 flet build windows --module-name 2fa.py
 ```
 
-Alternatively, using `flet pack` (PyInstaller-based packaging):
+Or using `flet pack` (PyInstaller):
+
 ```powershell
-flet pack --name "PNK Authenticator Windows" --icon assets/icon.ico 2fa.py
+flet pack --name "PNK Authenticator" 2fa.py
 ```
 
-The generated executable will be placed in the `dist` directory.
-
----
+The compiled output will be generated inside the `Windows/dist` directory.
 
 ## Project Structure
 
 ```text
-PNK-Authenticator/
-│
-├── main.py        # Android / Mobile entry point
-├── 2fa.py         # Windows / Desktop entry point
-├── pyproject.toml
-├── README.md
-│
-├── .venv/
-├── build/
-└── dist/
+PNK Authenticator/
+├── Android/
+│   ├── Main.py
+│   └── pyproject.toml
+├── Windows/
+│   └── 2fa.py
+└── README.md
 ```
 
-Additional files and directories may be generated during development and builds.
+Additional files and directories (like `build/` and `dist/`) may be generated inside each platform folder during builds.
 
 ## Configuration
 
-Application metadata and Android permissions are configured in `pyproject.toml`.
+Application metadata and Android permissions are configured in `Android/pyproject.toml`.
 
 Current application configuration:
 
