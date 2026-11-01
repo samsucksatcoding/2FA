@@ -138,6 +138,8 @@ PNK Authenticator/
 │   └── pyproject.toml
 ├── Windows/
 │   └── 2fa.py
+├── Linux/
+│   └── 2fa.py
 └── README.md
 ```
 
